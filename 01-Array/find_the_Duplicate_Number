@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        map<int,bool> visit;
+        for(int i=0;i<nums.size();i++){
+            if(visit[nums[i]]==true){
+                return nums[i];
+            }
+            visit[nums[i]]=true;
+        }
+        return 0;
+    }
+};
