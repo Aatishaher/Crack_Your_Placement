@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int maxScore(vector<int>& cp, int k) {
+        int ans = 0;
+        int i=0;
+        int sum = 0;
+        while(i<k){
+            sum += cp[i];
+            i++;
+        }
+        ans = max(ans,sum);
+        int st = cp.size()-1;
+        while(i>0){
+            i--;
+            sum -= cp[i];
+            sum += cp[st];
+            st--;
+            ans = max(ans,sum);
+        }
+        return ans;
+    }
+};
