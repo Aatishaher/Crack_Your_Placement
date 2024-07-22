@@ -1,0 +1,45 @@
+class Solution {
+public:
+    bool sol(vector<int>& nums,int ind,vector<int>& dp){
+        if(ind==nums.size()-1){
+            return true;
+        }
+        if(nums[ind]==0 || ind>nums.size()-1){
+            return false;
+        }
+        if(dp[ind]!=-1){
+            if(dp[ind]==1){
+                return true;
+            }
+            return false;
+        }
+        bool ans=false;
+        for(int i=1;i<=nums[ind];i++){
+            ans=sol(nums,ind+i,dp);
+            if(ans==true){
+                break;
+            }
+        }
+        if(ans){
+            dp[ind]=1;
+            return ans;
+        }
+        dp[ind]=0;
+        return ans;
+    }
+    bool canJump(vector<int>& nums) {
+        //return false;
+        vector<bool> arr(nums.size(),false);
+        arr[arr.size()-1]=true;
+       for(int i=arr.size()-2;i>=0;i--){
+           for(int j=1;j<=nums[i];j++){
+                if((i+j)<arr.size() && arr[i+j]==true){
+                arr[i]=true;
+                break;
+           }
+           arr[i]=false;
+           }
+       }
+       return arr[0];
+    }
+};
