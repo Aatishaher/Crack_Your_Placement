@@ -1,0 +1,71 @@
+class Solution {
+public:
+    int ans=0;
+    void merge(int s,int e,vector<int> &nums){
+        int mid=(s+e)/2;
+        int len1=mid-s+1;
+        int len2=e-mid;
+        vector<int> v1(len1);
+        vector<int> v2(len2);
+        for(int i=0;i<len1;i++){
+            v1[i]=(nums[i+s]);
+        }
+        for(int i=0;i<len2;i++){
+            v2[i]=(nums[mid+1+i]);
+        }
+        int j=0;
+        int k=0;
+        while(j<v1.size() && k<v2.size()){
+           if (static_cast<long long>(v1[j]) <= 2 * static_cast<long long>(v2[k])) {
+                j++;
+            }
+            else{
+                ans+=v1.size()-j;
+                k++;
+            }
+        }
+        int ind=s;
+        j=0;
+        k=0;
+        while(j<v1.size() && k<v2.size()){
+            if(v1[j]<v2[k]){
+                nums[ind]=v1[j];
+                ind++;
+                j++;
+            }
+            else{
+                nums[ind]=v2[k];
+                ind++;
+                k++;
+            }
+        }
+        while(j<v1.size()){
+            nums[ind]=v1[j];
+            ind++;
+            j++;
+        }
+        while(k<v2.size()){
+            nums[ind]=v2[k];
+            ind++;
+            k++;
+        }
+    }
+    void mergesort(vector<int> &nums,int l,int r){
+        if(l>=r){
+            return;
+        }
+        int m=(l+r)/2;
+        mergesort(nums,l,m);
+        mergesort(nums,m+1,r);
+        merge(l,r,nums);
+    }
+    int reversePairs(vector<int>& nums) {
+        int l=0;
+        int r=nums.size()-1;
+        mergesort(nums,l,r);
+        // for(int i=0;i<nums.size();i++){
+        //     cout<<nums[i]<<" ";
+        // }
+        return ans;
+    }
+};
