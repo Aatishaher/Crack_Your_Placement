@@ -1,0 +1,48 @@
+class Solution {
+public:
+    vector<string> ans;
+    bool ch(string &out){
+        //cout<<out<<" ";
+        stack<char> st;
+        for(int i=0;i<out.size();i++){
+            if(out[i]=='('){
+                st.push(out[i]);
+            }
+            else{
+                if(st.empty()){
+                    return false;
+                }
+                st.pop();
+            }
+        }
+        if(!st.empty()){
+            return false;
+        }
+        return true;
+    }
+    void sol(int n,int open,int close,string &out){
+        if(n==0){
+            if(ch(out)){
+                
+                ans.push_back(out);
+            }
+            return;
+        }
+        out.push_back('(');
+        sol(n-1,open+1,close,out);   //open
+        out.pop_back();
+        if(open>close){
+            out.push_back(')');
+            sol(n-1,open,close+1,out);
+            out.pop_back();
+        }
+    }
+    vector<string> generateParenthesis(int n) {
+        // if(n%2==1){
+        //     return ans;
+        // }
+        string out="";
+        sol(n*2,0,0,out);
+        return ans;
+    }
+};
