@@ -1,0 +1,50 @@
+class Solution {
+public:
+    bool valid(int row, int col, int i, int j) {
+    if (i < 0 || j < 0 || i >= row || j >= col) {
+        return false;
+    }
+    return true;
+}
+
+int numIslands(vector<vector<char>>& grid) {
+    int row = grid.size();
+    if (row == 0) return 0;
+    int col = grid[0].size();
+    vector<vector<bool>> visit(row, vector<bool>(col, false));
+    int ans = 0;
+    queue<pair<int,int>> q;
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+            if (grid[i][j] == '1' && !visit[i][j]) {
+                visit[i][j] = true;
+                q.push({i, j});
+                while (!q.empty()) {
+                    pair<int,int> front = q.front();
+                    q.pop();
+                    int x = front.first;
+                    int y = front.second;
+                    if (valid(row, col, x + 1, y) && !visit[x + 1][y] && grid[x + 1][y] == '1') {
+                        q.push({x + 1, y});
+                        visit[x + 1][y] = true;
+                    }
+                    if (valid(row, col, x - 1, y) && !visit[x - 1][y] && grid[x - 1][y] == '1') {
+                        q.push({x - 1, y});
+                        visit[x - 1][y] = true;
+                    }
+                    if (valid(row, col, x, y + 1) && !visit[x][y + 1] && grid[x][y + 1] == '1') {
+                        q.push({x, y + 1});
+                        visit[x][y + 1] = true;
+                    }
+                    if (valid(row, col, x, y - 1) && !visit[x][y - 1] && grid[x][y - 1] == '1') {
+                        q.push({x, y - 1});
+                        visit[x][y - 1] = true;
+                    }
+                }
+                ans++;
+            }
+        }
+    }
+    return ans;
+}
+};
