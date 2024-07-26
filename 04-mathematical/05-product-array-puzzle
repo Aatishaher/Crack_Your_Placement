@@ -1,0 +1,41 @@
+class Solution{
+  public:
+    // nums: given vector
+    // return the Product vector P that hold product except self at each index
+    vector<long long int> productExceptSelf(vector<long long int>& nums, int n) {
+       long long multi=1;
+       int f=0;
+       for(int i=0;i<nums.size();i++){
+           if(nums[i]==0){
+               f++;
+               if(f>1){
+                   break;
+               }
+           }
+           else{
+               multi*=nums[i];
+           }
+       }
+       vector<long long int> ans;
+       if(f>1){
+           vector<long long int> sol(n,0);
+           return sol;
+       }
+       if(f==1){
+            for(int i=0;i<n;i++){
+                if(nums[i]!=0){
+                    ans.push_back(0);
+                }
+                else{
+                    ans.push_back(multi);   
+                }
+            }
+            return ans;
+       }
+       for(int i=0;i<n;i++){
+           ans.push_back(multi/nums[i]);
+       }
+       return ans;
+        //code here        
+    }
+};
