@@ -1,0 +1,13 @@
+class Solution {
+public:
+    string convertToTitle(int c) {
+        string ans="";
+        while(c>0){
+            char ch='A'+((c-1)%26);
+            ans.push_back(ch);
+            c=(c-1)/26;
+        }
+        reverse(ans.begin(),ans.end());
+        return ans;
+    }
+};
