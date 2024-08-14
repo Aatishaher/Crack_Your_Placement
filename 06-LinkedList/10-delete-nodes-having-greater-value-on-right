@@ -1,0 +1,38 @@
+class Solution
+{   
+    Node* rev(Node* head){
+        Node* pre=NULL;
+        Node* temp=head;
+        Node* next=temp->next;
+        while(next){
+            temp->next=pre;
+            pre=temp;
+            temp=next;
+            next=next->next;
+        }
+        temp->next=pre;
+        pre=temp;
+        return pre;
+    }
+    public:
+    Node *compute(Node *head)
+    {
+        // your code goes here
+        head=rev(head);
+        Node* temp=head;
+        Node* temp1=temp->next;
+        while(temp1){
+            if(temp1 && temp1->data<temp->data){
+                temp1=temp1->next;
+            }
+            else{
+                temp->next=temp1;
+                temp=temp1;
+                temp1=temp1->next;
+            }
+        }
+        temp->next=NULL;
+        return rev(head);
+    }
+    
+};
