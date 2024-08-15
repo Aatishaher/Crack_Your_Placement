@@ -1,0 +1,39 @@
+class Solution {
+public:
+    ListNode* rev(ListNode* pre,ListNode* cur,ListNode* wait){
+        while(cur!=wait){
+            ListNode* next=cur->next;
+            cur->next=pre;
+            pre=cur;
+            cur=next;
+        }
+        return pre;
+    }
+    ListNode* reverseBetween(ListNode* head, int left, int right) {
+        if(left==right){
+            return head;
+        }
+        ListNode* temp=head;
+        ListNode* cur=head;
+        int cnt=1;
+        while(cnt!=left){
+            temp=cur;
+            cur=cur->next;
+            cnt++;
+        }
+        ListNode* pre=cur;
+        while(cnt!=right){
+            cnt++;
+            pre=pre->next;
+        }
+        //cout<<cur->val;
+        pre=pre->next;
+        ListNode* wait=pre;
+        if(left!=1){
+            temp->next=rev(pre,cur,wait);
+            return head;
+        }
+        head=rev(pre,cur,wait);
+        return head;
+    }
+};
