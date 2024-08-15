@@ -1,0 +1,58 @@
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+    ListNode* temp1 = list1;
+    ListNode* temp2 = list2;
+    ListNode* ans = new ListNode(-1);
+    ListNode* merp = ans;
+    
+    while (temp1 != NULL && temp2 != NULL) {
+        if (temp1->val < temp2->val) {
+            merp->next = temp1;
+            temp1 = temp1->next;
+        } else {
+            merp->next = temp2;
+            temp2 = temp2->next;
+        }
+        merp = merp->next;
+    }
+
+    while (temp1) {
+        merp->next = temp1;
+        temp1 = temp1->next;
+        merp = merp->next;
+    }
+
+    while (temp2) {
+        merp->next = temp2;
+        temp2 = temp2->next;
+        merp = merp->next;
+    }
+
+    return ans->next;  // Return ans->next instead of ans
+}
+
+ListNode* sortList(ListNode* head) {
+    if (head == NULL || head->next == NULL) {
+        return head;
+    }
+
+    ListNode* fast = head;
+    ListNode* slow = head;
+
+    while (fast && fast->next) {
+        fast = fast->next->next;
+        slow = slow->next;
+    }
+
+    ListNode* head1 = slow->next;
+    ListNode* head2 = head;
+    slow->next = NULL;
+
+    ListNode* left = sortList(head2);
+    ListNode* right = sortList(head1);
+
+    return mergeTwoLists(left, right);
+}
+
+};
