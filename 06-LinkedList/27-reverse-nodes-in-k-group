@@ -1,0 +1,29 @@
+class Solution {
+public:
+    void reverse(ListNode* s,ListNode* e){
+        ListNode* temp=s->next;
+        ListNode* pre=NULL;
+        ListNode* cur=s;
+        while(pre!=e){
+            cur->next=pre;
+            pre=cur;
+            cur=temp;
+            if(temp)
+                temp=temp->next;
+        }
+    }
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        if(k==1 || head==NULL || head->next==NULL) return head;
+        ListNode* s=head;
+        ListNode* e=head;
+        int x=k-1;
+        while(x--){
+            e=e->next;
+            if(e==NULL) return head;
+        }
+        ListNode* rem=reverseKGroup(e->next,k);
+        reverse(s,e);
+        s->next=rem;
+        return e;
+    }
+};
