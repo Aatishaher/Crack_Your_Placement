@@ -1,0 +1,19 @@
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        map<int,int> mp;
+        while(head){
+            mp[head->val]++;
+            head=head->next;
+        }
+        ListNode* ans=new ListNode(-1);
+        ListNode* temp=ans;
+        for(auto i:mp){
+            if(i.second==1){
+                ans->next=new ListNode(i.first);
+                ans=ans->next;
+            }
+        }
+        return temp->next;
+    }
+};
