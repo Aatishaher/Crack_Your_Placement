@@ -1,0 +1,36 @@
+class Solution {
+  public:
+    // Function which returns the  root of the flattened linked list.
+    Node *flatten(Node *root) {
+        // Your code here
+        Node* cur=root;
+        vector<int> nums;
+        while(cur){
+            if(cur->bottom){
+                Node* temp=cur;
+                while(temp){
+                    nums.push_back(temp->data);
+                    temp=temp->bottom;
+                }
+            }
+            else{
+                nums.push_back(cur->data);
+            }
+            cur=cur->next;
+        }
+        sort(nums.begin(),nums.end());
+        cur=root;
+        cur->data=nums[0];
+        for(int i=1;i<nums.size();i++){
+            if(cur->bottom){
+                cur->bottom->data=nums[i];
+            }
+            else{
+                cur->bottom=new Node(nums[i]);
+            }
+            cur=cur->bottom;
+        }
+        return root;
+        
+    }
+};
