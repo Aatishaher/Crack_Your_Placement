@@ -1,0 +1,42 @@
+class Solution {
+public:
+    string decodeString(string s) {
+        string ans;
+        //string add;
+        stack<char> st;
+        int i=0;
+        while(i<s.length()){
+            if(s[i]!=']'){
+                st.push(s[i]);
+            }
+            else{
+                string add;
+                while(st.top()!='['){
+                    add.insert(add.begin(),st.top());
+                    st.pop();
+                }
+                st.pop();
+                string num;
+                while(!st.empty() && st.top()>='0' && st.top()<='9'){
+                    num.insert(num.begin(),st.top());
+                    st.pop();
+                }
+                int n=stoi(num);
+                string repeatedString;
+                for (int j = 0; j < n; ++j) {
+                repeatedString += add;
+            }
+            for (char ch : repeatedString) {
+                st.push(ch);
+            }
+            }
+            i++;
+        }
+        while (!st.empty()) {
+            ans.insert(ans.begin(), st.top());
+            st.pop();
+        }
+        return ans;
+        
+    }
+};
