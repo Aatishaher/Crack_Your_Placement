@@ -1,0 +1,64 @@
+class Trie{
+    public:
+        char data;
+        Trie* children[26];
+        bool ter;
+        Trie(char ch){
+            data=ch;
+            for(int i=0;i<26;i++){
+                children[i]=NULL;
+            }
+            ter=false;
+        }
+    };
+class WordDictionary {
+public:
+    Trie* root=new Trie('*');
+    WordDictionary() {
+        
+    }
+    
+    void addWord(string s) {
+        Trie* temp=root;
+        for(int i=0;i<s.size();i++){
+            if(temp->children[s[i]-'a']==NULL){
+                temp->children[s[i]-'a']=new Trie(s[i]);
+            }
+            temp=temp->children[s[i]-'a'];
+        }
+        temp->ter=true;
+    }
+    
+    bool dfs(int i,string &s,Trie* temp){
+        if(i>=s.length()){
+            if(temp->ter==true){
+                return true;
+            }
+            return false;
+        }
+        if(s[i]=='.'){
+            for(int j=0;j<26;j++){
+                if(temp->children[j]!=NULL){
+                    bool ans=dfs(i+1,s,temp->children[j]);
+                    if(ans==true){
+                        return 1;
+                    }
+                }
+            }
+            return 0;
+        }
+        else{
+            if(temp->children[s[i]-'a']==NULL){
+                return 0;
+            }
+            else{
+                return dfs(i+1,s,temp->children[s[i]-'a']);
+            }
+        }
+        return 0;
+    }
+    bool search(string s) {
+        Trie* temp=root;
+        return dfs(0,s,temp);
+    }
+};
