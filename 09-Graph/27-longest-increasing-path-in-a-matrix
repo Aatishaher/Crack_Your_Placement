@@ -1,0 +1,44 @@
+class Solution {
+public:
+    bool chk(vector<vector<int>> &m,int i,int j,int x,int y){
+        if(i<0 || j<0 || i>=m.size() || j>=m[0].size()){
+            return false;
+        }
+        if(m[i][j]>=m[x][y]){
+            return false;
+        }
+        return true;
+    }
+    int sol(vector<vector<int>>& m,int i,int j,vector<vector<int>> &dp){
+        int op1=0;
+        int op2=0;
+        int op3=0;
+        int op4=0;
+        if(dp[i][j]!=-1){
+            return dp[i][j];
+        }
+        if(chk(m,i+1,j,i,j)){
+            op1=1+sol(m,i+1,j,dp);
+        }
+        if(chk(m,i,j+1,i,j)){
+            op2=1+sol(m,i,j+1,dp);
+        }
+        if(chk(m,i-1,j,i,j)){
+            op3=1+sol(m,i-1,j,dp);
+        }
+        if(chk(m,i,j-1,i,j)){
+            op4=1+sol(m,i,j-1,dp);
+        }
+        return dp[i][j]=max(op1,max(op2,max(op3,op4)));
+    }
+    int longestIncreasingPath(vector<vector<int>>& matrix) {
+        int ans=0;
+        vector<vector<int>> dp(matrix.size() , vector<int>(matrix[0].size() , -1));
+        for(int i=0;i<matrix.size();i++){
+            for(int j=0;j<matrix[0].size();j++){
+                ans=max(ans,sol(matrix,i,j,dp)+1);
+            }
+        }
+        return ans;
+    }
+};
