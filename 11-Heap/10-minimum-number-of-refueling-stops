@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int sol(int i, int cur, int target, vector<vector<int>> &stations, vector<vector<int>> &memo) {
+    if (cur >= target) {
+        return 0;
+    }
+    if (i == stations.size()) {
+        return cur >= target ? 0 : 1e9;
+    }
+    if (memo[i][cur] != -1) {
+        return memo[i][cur];
+    }
+    int ans1 = sol(i + 1, cur, target, stations, memo);
+    int ans2 = INT_MAX;
+    if (cur >= stations[i][0]) { 
+        ans2 = 1 + sol(i + 1, cur + stations[i][1], target, stations, memo);
+    }
+
+    return memo[i][cur] = min(ans1, ans2);
+}
+
+int minRefuelStops(int target, int startFuel, vector<vector<int>>& stations) {
+    vector<vector<int>> memo(stations.size() + 1, vector<int>(target + 1, -1));
+    int result = sol(0, startFuel, target, stations, memo);
+    if(result>=1e9){
+        return -1;
+    }
+    return result;
+}
+};
