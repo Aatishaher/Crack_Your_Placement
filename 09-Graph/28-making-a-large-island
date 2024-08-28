@@ -1,0 +1,84 @@
+class Solution {
+public:
+    bool valid(int i,int j,int row,int col){
+        if(i<0 || j<0 || i>=row || j>=col){
+            return 0;
+        }
+        return 1;
+    }
+    int dfs(int i,int j,vector<vector<int>> &grid,set<pair<int,int>> &st){
+        st.insert({i,j});
+        int ans=0;
+        if(valid(i+1,j,grid.size(),grid[0].size()) && st.find({i+1,j})==st.end() && grid[i+1][j]==1){
+            ans+=dfs(i+1,j,grid,st);
+        }
+        if(valid(i-1,j,grid.size(),grid[0].size()) && st.find({i-1,j})==st.end() && grid[i-1][j]==1){
+            ans+=dfs(i-1,j,grid,st);
+        }
+        if(valid(i,j+1,grid.size(),grid[0].size()) && st.find({i,j+1})==st.end() && grid[i][j+1]==1){
+            ans+=dfs(i,j+1,grid,st);
+        }
+        if(valid(i,j-1,grid.size(),grid[0].size()) && st.find({i,j-1})==st.end() && grid[i][j-1]==1){
+            ans+=dfs(i,j-1,grid,st);
+        }
+        return 1+ans;
+    }
+    int largestIsland(vector<vector<int>>& grid) {
+        int z=0;
+        vector<vector<pair<int,int>>> mat(grid.size(),vector<pair<int,int>>(grid[0].size(),{0,0}));//size  counter
+        int cnt=1;
+        for(int i=0;i<grid.size();i++){
+            for(int j=0;j<grid[0].size();j++){
+                if(grid[i][j]==0){
+                    z++;
+                }
+                if(grid[i][j]==1 && mat[i][j].first==0){
+                    set<pair<int,int>> visit;
+                    int size=dfs(i,j,grid,visit);
+                    for(auto i:visit){
+                        mat[i.first][i.second]={size,cnt};
+                    }
+                    cnt++;
+                    visit.clear();
+                }
+            }
+        }
+        if(z==0){
+            return mat.size()*mat[0].size();
+        }
+        // for(int i=0;i<mat.size();i++){
+        //     for(int j=0;j<mat[0].size();j++){
+        //         cout<<mat[i][j].first<<mat[i][j].second<<" ";
+        //     }
+        //     cout<<endl;
+        // }
+        int ans=0;
+        for(int i=0;i<mat.size();i++){
+            for(int j=0;j<mat[0].size();j++){
+                if(mat[i][j].first==0){
+                    int sol=0;
+                    set<int> st;
+                    if(valid(i+1,j,mat.size(),mat[0].size()) && mat[i+1][j].first!=0 && st.find(mat[i+1][j].second)==st.end()){
+                        sol+=mat[i+1][j].first;
+                        st.insert(mat[i+1][j].second);
+                    }
+                    if(valid(i-1,j,mat.size(),mat[0].size()) && mat[i-1][j].first!=0 && st.find(mat[i-1][j].second)==st.end()){
+                        sol+=mat[i-1][j].first;
+                        st.insert(mat[i-1][j].second);
+                    }
+                    if(valid(i,j+1,mat.size(),mat[0].size()) && mat[i][j+1].first!=0 && st.find(mat[i][j+1].second)==st.end()){
+                        sol+=mat[i][j+1].first;
+                        st.insert(mat[i][j+1].second);
+                    }
+                    if(valid(i,j-1,mat.size(),mat[0].size()) && mat[i][j-1].first!=0 && st.find(mat[i][j-1].second)==st.end()){
+                        sol+=mat[i][j-1].first;
+                        st.insert(mat[i][j-1].second);
+                    }
+                    ans=max(ans,sol+1);
+                    st.clear();
+                }
+            }
+        }
+        return ans;
+    }
+};
