@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int mod=1e9+7;
+    int sol(int i,map<int,vector<int>> &mp,int n,vector<vector<int>> &dp){
+        if(n==1){
+            return 1;
+        }
+        if(dp[i][n]!=-1){
+            return dp[i][n];
+        }
+        int ans=0;
+        for(auto neb:mp[i]){
+            ans=(ans+sol(neb,mp,n-1,dp))%mod;
+        }
+        return dp[i][n]=ans%mod;
+    }
+    int knightDialer(int n) {
+        map<int,vector<int>> mp;
+        mp[1]={6,8};
+        mp[2]={7,9};
+        mp[3]={4,8};
+        mp[4]={3,9,0};
+        mp[6]={7,1,0};
+        mp[7]={2,6};
+        mp[8]={1,3};
+        mp[9]={2,4};
+        mp[0]={4,6};
+        int ans=0;
+        if(n==1){
+            return 10;
+        }
+        vector<vector<int>> dp(11,vector<int>(n+1,-1));
+        for(int i=0;i<=9;i++){
+            if(i!=5){
+                ans=(ans+sol(i,mp,n,dp))%mod;
+            }
+            else if(n==1){
+                ans++;
+            }
+        }
+        return ans; 
+    }
+};
