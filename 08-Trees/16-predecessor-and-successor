@@ -1,0 +1,35 @@
+class Solution
+{
+    public:
+    void findsuc(Node* root,Node* &suc,int k){
+        if(root==NULL){
+            return;
+        }
+        if(root->key>k){
+            suc=root;
+            findsuc(root->left,suc,k);
+        }
+        else{
+            findsuc(root->right,suc,k);
+        }
+    }
+    void findpre(Node* root,Node* &pre,int k){
+        if(root==NULL){
+            return;
+        }
+        if(root->key>=k){
+            findpre(root->left,pre,k);
+        }
+        else{
+            pre=root;
+            findpre(root->right,pre,k);
+        }
+    }
+    
+    void findPreSuc(Node* root, Node*& pre, Node*& suc, int key)
+    {
+        // Your code goes here
+        findsuc(root,suc,key);
+        findpre(root,pre,key);
+    }
+};
