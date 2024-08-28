@@ -1,0 +1,36 @@
+class Solution {
+public:
+	bool isBipartite(int V, vector<int>adj[]){
+	    // Code here
+	    
+	    vector<int> paint(V,-1);
+	    for(int i=0;i<V;i++){
+	        if(paint[i]==-1){
+	    queue<int> q;
+	    q.push(i);
+	    paint[i]=0;
+	    while(!q.empty()){
+	        int t=q.front();
+	        q.pop();
+	        for(auto neb:adj[t]){
+	            if(paint[neb]==paint[t]){
+	                return false;
+	            }
+	            if(paint[neb]==-1){
+	                if(paint[t]==1){
+	                    paint[neb]=0;
+	                }
+	                else{
+	                    paint[neb]=1;
+	                }
+	                q.push(neb);
+	            }
+	        }
+	    }
+	    }
+	    }
+	    return true;
+	    
+	}
+
+};
