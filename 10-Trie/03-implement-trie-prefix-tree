@@ -1,0 +1,70 @@
+class tries {
+public:
+    char ch;
+    tries* arr[26];
+    bool termin;
+
+    tries(char ch) {
+        this->ch = ch;
+        for (int i = 0; i < 26; i++) {
+            arr[i] = NULL;
+        }
+        this->termin = false;
+    }
+};
+
+class Trie {
+private:
+    tries* root;
+
+    void insertHelper(string& word, tries* root, int index) {
+        if (index == word.length()) {
+            root->termin = true;
+            return;
+        }
+        int i = word[index] - 'a';
+        if (root->arr[i] == NULL) {
+            root->arr[i] = new tries(word[index]);
+        }
+        insertHelper(word, root->arr[i], ++index);
+    }
+
+    bool searchHelper(string& word, tries* root, int index) {
+        if (index == word.length()) {
+            return root->termin;
+        }
+        int i = word[index] - 'a';
+        if (root->arr[i] == NULL) {
+            return false;
+        }
+        return searchHelper(word, root->arr[i], ++index);
+    }
+
+    bool startsWithHelper(string& prefix, tries* root, int index) {
+        if (index == prefix.length()) {
+            return true;
+        }
+        int i = prefix[index] - 'a';
+        if (root->arr[i] == NULL) {
+            return false;
+        }
+        return startsWithHelper(prefix, root->arr[i], ++index);
+    }
+
+public:
+    Trie() {
+        root = new tries('-');
+    }
+
+    void insert(string word) {
+        insertHelper(word, root, 0);
+    }
+
+    bool search(string word) {
+        return searchHelper(word, root, 0);
+    }
+
+    bool startsWith(string prefix) {
+        return startsWithHelper(prefix, root, 0);
+    }
+};
