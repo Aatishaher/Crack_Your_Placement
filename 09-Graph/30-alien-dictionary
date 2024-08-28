@@ -1,0 +1,42 @@
+class Solution {
+  public:
+    void dfs(int start, vector<int>& visit, stack<int>& st, vector<vector<int>>& adj){
+        visit[start] = 1;
+        
+        for(int it:adj[start]){
+            if(visit[it] == 0){
+                dfs(it, visit, st, adj);
+            }
+        }
+        st.push(start);
+    }
+    string findOrder(string dict[], int n, int k) {
+        // code here
+        vector<vector<int>> adj(k);
+        for(int i=0; i<n-1; i++){
+            string s1 = dict[i];
+            string s2 = dict[i+1];
+            int size = min(s1.size(), s2.size());
+            for(int j=0; j<size; j++){
+                if(s1[j] != s2[j]){
+                    adj[s1[j]-'a'].push_back(s2[j]-'a');
+                    break;
+                }
+            }
+        }
+        vector<int> visit(k,0);
+        stack<int> st;
+        for(int i=0; i<k; i++){
+            if(visit[i]==0){
+                dfs(i, visit, st, adj);
+            }
+        }
+        string ans;
+        while (!st.empty()) {
+            ans += st.top() + 'a';
+            st.pop();
+        }
+        
+        return ans;
+    }
+};
