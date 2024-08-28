@@ -1,0 +1,31 @@
+class NestedIterator {
+public:
+    vector<int> out;
+    int i=0;
+    void sol(vector<NestedInteger> &adj){
+        for(int j=0;j<adj.size();j++){
+            if(adj[j].isInteger()){
+                out.push_back(adj[j].getInteger());
+            }
+            else{
+                sol(adj[j].getList());
+            }
+        }
+    }
+    NestedIterator(vector<NestedInteger> &nestedList) {
+        sol(nestedList);
+    }
+    
+    int next() {
+        return out[i++];
+    }
+    
+    bool hasNext() {
+        if(i>=out.size()){
+            return 0;
+        }
+        else{
+            return 1;
+        }
+    }
+};
