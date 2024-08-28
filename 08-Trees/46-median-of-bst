@@ -1,0 +1,37 @@
+int count(Node *root) {
+    if (root == NULL) {
+        return 0;
+    }
+    return 1 + count(root->left) + count(root->right);
+}
+
+void sol(Node* root, int &k, bool even, float &ans) {
+    if (root == NULL) {
+        return;
+    }
+    sol(root->left, k, even, ans);
+    k--;
+    if (k == 1 && even) {
+        ans += root->data;
+    }
+    else if (k == 0) {
+        ans += root->data;
+        return;
+    }
+    sol(root->right, k, even, ans);
+}
+float findMedian(struct Node *root) {
+    // Reset ans for each call
+    float ans = 0;
+
+    int c = count(root);
+    int k = (c / 2) + 1;
+
+    if (c % 2 == 0) {
+        sol(root, k, true,ans);
+        ans /= 2;
+    } else {
+        sol(root, k, false,ans);
+    }
+    return ans;
+}
