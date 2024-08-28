@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int sol(int i, int size, int m, int n, vector<pair<int, int>>& count, vector<vector<vector<int>>>& dp) {
+    if (i == size || n < 0 || m < 0) {
+        return 0;
+    }
+    if (dp[i][m][n] != -1) {
+        return dp[i][m][n];
+    }
+    int skip = sol(i + 1, size, m, n, count, dp);  
+    int take = 0;
+    if (m >= count[i].first && n >= count[i].second) {
+        take = 1 + sol(i + 1, size, m - count[i].first, n - count[i].second, count, dp);
+    }
+    return dp[i][m][n] = max(skip, take);
+}
+
+int findMaxForm(vector<string>& strs, int m, int n) {
+    vector<pair<int, int>> count(strs.size());
+    for (int i = 0; i < strs.size(); ++i) {
+        int zeros = 0, ones = 0;
+        for (char c : strs[i]) {
+            if (c == '0') {
+                ++zeros;
+            } else {
+                ++ones;
+            }
+        }
+        count[i] = {zeros, ones};
+    }
+    
+    vector<vector<vector<int>>> dp(strs.size(), vector<vector<int>>(m + 1, vector<int>(n + 1, -1)));
+    return sol(0, strs.size(), m, n, count, dp);
+}
+};
