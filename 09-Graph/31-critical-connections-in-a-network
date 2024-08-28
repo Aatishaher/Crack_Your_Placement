@@ -1,0 +1,42 @@
+class Solution {
+public:
+    vector<vector<int>> ans;
+    int cnt=0;
+    void sol(int i,vector<int> &dis,vector<int> &par,vector<int> &low,vector<int> &visit,vector<list<int>> &adj){
+        visit[i]=1;
+        dis[i]=cnt;
+        low[i]=cnt++;
+        for(auto neb:adj[i]){
+            if(neb==par[i]) continue;
+            if(visit[neb]==0){
+                par[neb]=i;
+                sol(neb,dis,par,low,visit,adj);
+                low[i] = min(low[i], low[neb]);
+                if(dis[i]<low[neb]){
+                    ans.push_back({i,neb});
+                }
+            }
+            else{
+                low[i]=min(low[i],dis[neb]);
+                if(dis[i]<low[neb]){
+                    ans.push_back({i,neb});
+                }
+            }
+        }
+
+    }
+    vector<vector<int>> criticalConnections(int n, vector<vector<int>>& con) {
+        vector<list<int>> adj(n);
+        for(int i=0;i<con.size();i++){
+            adj[con[i][0]].push_back(con[i][1]);
+            adj[con[i][1]].push_back(con[i][0]);
+        }
+        vector<int> dis(n,-1);
+        vector<int> par(n,-1);
+        vector<int> low(n,-1);
+        vector<int> visit(n,0);
+        sol(0,dis,par,low,visit,adj);
+        return ans;
+
+    }
+};
