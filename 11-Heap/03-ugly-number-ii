@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        vector<int> dp(n+1);
+        dp[0]=1;
+        int i,j,k;
+        i=0;
+        j=0;
+        k=0;
+        for(int x=1;x<=n;x++){
+            int t2=2*dp[i];
+            int t3=3*dp[j];
+            int t4=5*dp[k];
+            dp[x]=min(t2,min(t3,t4));
+            if(dp[x]==t2) i++;
+            if(dp[x]==t3) j++;
+            if(dp[x]==t4) k++;
+        }
+        return dp[n-1];
+    }
+};
