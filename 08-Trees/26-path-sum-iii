@@ -1,0 +1,25 @@
+class Solution {
+private:
+    int ans = 0;
+
+    void sol(TreeNode* root, long long target) {
+        if (root == nullptr) {
+            return;
+        }
+        if (target == root->val) {
+            ans++;
+        }
+        sol(root->left, target - root->val);
+        sol(root->right, target - root->val);
+    }
+
+public:
+    int pathSum(TreeNode* root, int targetSum) {
+        if (root) {
+            sol(root, static_cast<long long>(targetSum));
+            pathSum(root->left, targetSum);
+            pathSum(root->right, targetSum);
+        }
+        return ans;
+    }
+};
