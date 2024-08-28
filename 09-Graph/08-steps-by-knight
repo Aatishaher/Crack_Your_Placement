@@ -1,0 +1,47 @@
+class Solution 
+{
+    public:
+    //Function to find out minimum steps Knight needs to reach target position.
+    bool valid(int i, int j, int n) {
+    return (i > 0 && j > 0 && i <= n && j <= n);
+}
+
+int minStepToReachTarget(vector<int>& k, vector<int>& tar, int n) {
+    vector<vector<bool>> visit(n + 1, vector<bool>(n + 1, false));
+    queue<pair<pair<int, int>, int>> q;
+    
+    // Initialize the queue with the starting position
+    visit[k[0]][k[1]] = true;
+    q.push({{k[0], k[1]}, 0});
+
+    // Possible knight moves
+    int dx[] = {2, 2, -2, -2, 1, 1, -1, -1};
+    int dy[] = {1, -1, 1, -1, 2, -2, 2, -2};
+
+    while (!q.empty()) {
+        int i = q.front().first.first;
+        int j = q.front().first.second;
+        int t = q.front().second;
+        q.pop();
+
+        // If the current position is the target, return the number of steps
+        if (i == tar[0] && j == tar[1]) {
+            return t;
+        }
+
+        // Check all possible knight moves
+        for (int k = 0; k < 8; ++k) {
+            int ni = i + dx[k];
+            int nj = j + dy[k];
+
+            if (valid(ni, nj, n) && !visit[ni][nj]) {
+                visit[ni][nj] = true; // Mark as visited
+                q.push({{ni, nj}, t + 1});
+            }
+        }
+    }
+
+    return -1; // If the target is not reachable
+}
+
+};
