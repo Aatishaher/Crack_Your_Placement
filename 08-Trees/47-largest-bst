@@ -1,0 +1,35 @@
+class Solution{
+    public:
+    /*You are required to complete this method */
+    // Return the size of the largest sub-tree which is also a BST
+    pair<pair<bool,int>,pair<int,int>> sol(Node* root){
+        if(!root){
+            return{{true,0},{-1e9,1e9}};
+        }
+        auto ans1=sol(root->left);
+        auto ans2=sol(root->right);
+        if(ans1.first.first==false || ans2.first.first==false){
+            int len=max(ans1.first.second,ans2.first.second);
+            return{{false,len},{-1,-1}};
+        }
+        if (root->data > ans1.second.first && root->data < ans2.second.second) {
+        int len = ans1.first.second + ans2.first.second + 1;
+        int maxi = max(root->data, ans2.second.first);
+        int mini = min(root->data, ans1.second.second);
+        return {{true, len}, {maxi, mini}};
+    }
+        int le=max(ans1.first.second,ans2.first.second);
+        return {{false,le},{-1,-1}};
+        
+    }
+    
+    
+    int largestBst(Node *root)
+    {
+    	//Your code here
+    	// valid, nodes count,big small
+    	pair<pair<bool,int>,pair<int,int>>ans= sol(root);
+    	return ans.first.second;
+    	
+    }
+};
