@@ -1,0 +1,18 @@
+class Solution {
+public:
+    TreeNode* sol(vector<int>& nums,int s,int e){
+        if(s>e){
+            return NULL;
+        }
+        int m=(s+e)/2;
+        TreeNode* root=new TreeNode(nums[m]);
+        root->left=sol(nums,s,m-1);
+        root->right=sol(nums,m+1,e);
+        return root;
+    }
+    TreeNode* sortedArrayToBST(vector<int>& nums) {
+        int start=0;
+        int end=nums.size()-1;
+        return sol(nums,start,end);
+    }
+};
