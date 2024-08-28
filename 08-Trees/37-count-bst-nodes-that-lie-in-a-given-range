@@ -1,0 +1,21 @@
+class Solution{
+public:
+    int getCount(Node *root, int l, int r)
+    {
+      // your code goes here
+      if(root==NULL){
+          return 0;
+      }
+      if(root->data<l){
+          return getCount(root->right,l,r);   //right
+      }
+      else if(root->data>r){
+          return getCount(root->left,l,r);   //left
+      }
+      else{
+          return 1+getCount(root->left,l,r)+getCount(root->right,l,r);
+      }
+      
+      
+    }
+};
