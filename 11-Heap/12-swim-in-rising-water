@@ -1,0 +1,62 @@
+class Solution {
+public:
+    bool valid(int i,int j,int row,int col){
+        if(i<0 || j<0 ||i>=row || j>=col){
+            return false;
+        }
+        return true;
+    }
+    void dfs(pair<int,int> ad,int &val,vector<vector<int>> &visit,priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>> &pq,vector<vector<int>>& grid){
+        int i=ad.first;
+        int j=ad.second;
+        visit[i][j]=1;
+        if(valid(i+1,j,grid.size(),grid[0].size()) && visit[i+1][j]==0){
+            if(grid[i+1][j]<=val){
+                dfs({i+1,j},val,visit,pq,grid);
+            }
+            else{
+                pq.push({grid[i+1][j],{i+1,j}});
+            }
+        }
+        if(valid(i-1,j,grid.size(),grid[0].size()) && visit[i-1][j]==0){
+            if(grid[i-1][j]<=val){
+                dfs({i-1,j},val,visit,pq,grid);
+            }
+            else{
+                pq.push({grid[i-1][j],{i-1,j}});
+            }
+        }
+        if(valid(i,j+1,grid.size(),grid[0].size()) && visit[i][j+1]==0){
+            if(grid[i][j+1]<=val){
+                dfs({i,j+1},val,visit,pq,grid);
+            }
+            else{
+                pq.push({grid[i][j+1],{i,j+1}});
+            }
+        }
+        if(valid(i,j-1,grid.size(),grid[0].size()) && visit[i][j-1]==0){
+            if(grid[i][j-1]<=val){
+                dfs({i,j-1},val,visit,pq,grid);
+            }
+            else{
+                pq.push({grid[i][j-1],{i,j-1}});
+            }
+        }
+    }
+    int swimInWater(vector<vector<int>>& grid) {
+        int row=grid.size();
+        int col=grid[0].size();
+        vector<vector<int>> visit(row,vector<int>(col,0));
+        priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>> pq;
+        pq.push({grid[0][0],{0,0}});
+        while(!pq.empty()){
+            auto top=pq.top();
+            pq.pop();
+            dfs(top.second,top.first,visit,pq,grid);
+            if(visit[row-1][col-1]==1){
+                return top.first;
+            }
+        }
+        return -1;
+    }
+};
