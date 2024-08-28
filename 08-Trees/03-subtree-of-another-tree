@@ -1,0 +1,30 @@
+class Solution {
+public:
+    bool ch(TreeNode* temp1,TreeNode* temp2){
+        if(temp1==NULL && temp2==NULL){
+            return true;
+        }
+        if(temp1==NULL || temp2==NULL){
+            return false;
+        }
+        if(temp1->val!=temp2->val){
+            return false;
+        }
+        bool ans1=ch(temp1->left,temp2->left);
+        bool ans2=ch(temp1->right,temp2->right);
+        return (ans1 && ans2);
+    }
+    bool isSubtree(TreeNode* root, TreeNode* subRoot) {
+        if(root==NULL){
+            return false;
+        }
+        if(root->val==subRoot->val){
+            if(ch(root,subRoot)){
+                return true;
+            }
+        }
+        bool ans1=isSubtree(root->left,subRoot);
+        bool ans2=isSubtree(root->right,subRoot);
+        return (ans1 || ans2);
+    }
+};
