@@ -1,0 +1,41 @@
+class Solution {
+public:
+    void sol(TreeNode* root,int k,map<TreeNode*,bool> &visit,map<TreeNode*,TreeNode*> &par,vector<int> &ans){
+        if(root==NULL || visit[root]){
+            return;
+        }
+        if(k==0){
+            ans.push_back(root->val);
+            return;
+        }
+        visit[root]=true;
+        sol(root->left,k-1,visit,par,ans);
+        sol(root->right,k-1,visit,par,ans);
+        if(par[root]){
+            sol(par[root],k-1,visit,par,ans);
+        }
+
+    }
+    void trav(map<TreeNode*,TreeNode*> &mp,TreeNode* root){
+        if(root==NULL){
+            return;
+        }
+        if(root->left){
+            mp[root->left]=root;
+            trav(mp,root->left);
+        }
+        if(root->right){
+            mp[root->right]=root;
+            trav(mp,root->right);
+        }
+    }
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        map<TreeNode*,TreeNode*> par;
+        trav(par,root);
+        vector<int> ans;
+        map<TreeNode*,bool> visit;
+        par[root]=NULL;
+        sol(target,k,visit,par,ans);
+        return ans;
+    }
+};
