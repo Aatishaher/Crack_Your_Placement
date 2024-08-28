@@ -1,0 +1,48 @@
+class Solution {
+public:
+    bool valid(int row,int col,int i,int j){
+        if(i<0 || j<0 || i>=row || j>=col){
+            return false;
+        }
+        return true;
+    }
+   void sol(vector<vector<int>>& mat, int sr, int sc, int color) {
+    int row = mat.size();
+    if (row == 0) return;
+    int col = mat[0].size();
+    int old = mat[sr][sc];
+    if (old == color) return; // Early termination if old and new colors are the same
+    
+    queue<pair<int, int>> q;
+    q.push({sr, sc});
+    mat[sr][sc] = color; // Marking the starting cell
+    
+    while (!q.empty()) {
+        int i = q.front().first;
+        int j = q.front().second;
+        q.pop();
+        
+        // Explore neighboring cells
+        if (i + 1 < row && mat[i + 1][j] == old) {
+            q.push({i + 1, j});
+            mat[i + 1][j] = color; // Mark cell as visited
+        }
+        if (i - 1 >= 0 && mat[i - 1][j] == old) {
+            q.push({i - 1, j});
+            mat[i - 1][j] = color;
+        }
+        if (j + 1 < col && mat[i][j + 1] == old) {
+            q.push({i, j + 1});
+            mat[i][j + 1] = color;
+        }
+        if (j - 1 >= 0 && mat[i][j - 1] == old) {
+            q.push({i, j - 1});
+            mat[i][j - 1] = color;
+        }
+    }
+}
+    vector<vector<int>> floodFill(vector<vector<int>>& mat, int sr, int sc, int color) {
+        sol(mat,sr,sc,color);
+        return mat;
+    }
+};
