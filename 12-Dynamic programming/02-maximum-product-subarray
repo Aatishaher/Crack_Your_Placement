@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        double int_pro=1;
+        double fin_pro=1;
+        double res=INT_MIN;
+        for(int i=0;i<nums.size();i++){
+            if(int_pro==0){
+                int_pro=1;
+            }
+            if(fin_pro==0){
+                fin_pro=1;
+            }
+            int_pro*=nums[i];
+            fin_pro*=nums[nums.size()-i-1];
+            res=max({res,int_pro,fin_pro});
+        }
+        return res;
+    }
+};
