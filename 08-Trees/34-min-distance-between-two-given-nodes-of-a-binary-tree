@@ -1,0 +1,37 @@
+class Solution{
+    public:
+    /* Should return minimum distance between a and b
+    in a tree with given root*/
+    Node* lca(Node* root, int a, int b) {
+    if (root == NULL || root->data == a || root->data == b) {
+        return root;
+    }
+    Node* left = lca(root->left, a, b);
+    Node* right = lca(root->right, a, b);
+    if (left != NULL && right != NULL) {
+        return root;
+    }
+    return (left != NULL) ? left : right;
+}
+
+int d(Node* root, int k, int dist) {
+    if (root == NULL) {
+        return -1;
+    }
+    if (root->data == k) {
+        return dist;
+    }
+    int left = d(root->left, k, dist + 1);
+    if (left != -1) {
+        return left;
+    }
+    return d(root->right, k, dist + 1);
+}
+
+int findDist(Node* root, int a, int b) {
+    Node* l = lca(root, a, b);
+    int d1 = d(l, a, 0);
+    int d2 = d(l, b, 0);
+    return d1 + d2;
+}
+};
