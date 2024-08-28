@@ -1,0 +1,41 @@
+class Solution
+{
+	public:
+	//Function to return list containing vertices in Topological order. 
+	vector<int> topoSort(int V, vector<int> a[]) {
+    vector<int> in(V, 0);
+    vector<list<int>> adj(V);
+    
+    // Building the graph and in-degree array
+    for (int i = 0; i < V; ++i) {
+        for (int j : a[i]) {
+            adj[i].push_back(j);
+            in[j]++;
+        }
+    }
+
+    // Using a min-heap priority queue for lexicographically smallest order
+    priority_queue<int, vector<int>, greater<int>> pq;
+    for (int i = 0; i < V; ++i) {
+        if (in[i] == 0) {
+            pq.push(i);
+        }
+    }
+
+    vector<int> ans;
+    while (!pq.empty()) {
+        int t = pq.top();
+        pq.pop();
+        ans.push_back(t);
+        
+        for (int neb : adj[t]) {
+            in[neb]--;
+            if (in[neb] == 0) {
+                pq.push(neb);
+            }
+        }
+    }
+
+    return ans;
+}
+};
