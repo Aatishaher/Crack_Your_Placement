@@ -1,0 +1,16 @@
+class Solution {
+public:
+         void traversal(TreeNode* root) {
+        if (!root) return;
+        TreeNode* temp = root->left;
+        root->left = root->right;
+        root->right = temp;
+        traversal(root->left);
+        traversal(root->right);    
+    }
+
+    TreeNode* invertTree(TreeNode* root) {
+        traversal(root);
+        return root;
+    }
+};
