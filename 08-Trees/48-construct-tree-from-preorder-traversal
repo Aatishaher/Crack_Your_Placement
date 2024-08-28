@@ -1,0 +1,20 @@
+Node* sol(int n,int pre[],char preLN[],int &i){
+    if(i>=n){
+        return NULL;
+    }
+    Node* temp=new Node(pre[i]);
+    if(preLN[i]=='N'){
+        i++;
+        temp->left=sol(n,pre,preLN,i);
+        i++;
+        temp->right=sol(n,pre,preLN,i);
+    }
+    return temp;
+    
+}
+struct Node *constructTree(int n, int pre[], char preLN[])
+{
+    // Code here
+    int ind=0;
+    return sol(n,pre,preLN,ind);
+}
