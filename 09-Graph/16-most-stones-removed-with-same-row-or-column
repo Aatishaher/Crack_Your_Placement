@@ -1,0 +1,27 @@
+class Solution {
+public:
+    void dfs(int i,map<int,vector<int>> &mp,map<int,bool> &visit){
+        visit[i]=1;
+        for(auto neb:mp[i]){
+                if(visit[neb]==0){
+                    dfs(neb,mp,visit);
+            }
+        }
+    }
+    int removeStones(vector<vector<int>>& s) {
+        map<int,vector<int>> mp;
+        for(int i=0;i<s.size();i++){
+            mp[s[i][0]].push_back((-1*s[i][1])-1);
+            mp[(-1*s[i][1])-1].push_back(s[i][0]);
+        }
+        int num=0;
+        map<int,bool> visit;
+        for(auto i:mp){
+            if(visit[i.first]==0){
+                dfs(i.first,mp,visit);
+                num++;
+            }
+        }
+        return s.size()-num;
+    }
+};
