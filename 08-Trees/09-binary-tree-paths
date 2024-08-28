@@ -1,0 +1,26 @@
+class Solution {
+public:
+    void trav(TreeNode* root,vector<string> &ans,string str){
+        if(root==NULL){
+            return;
+        }
+        if(root->left==NULL && root->right==NULL){
+            string t=to_string(root->val);
+            str+=t;
+            ans.push_back(str);
+            return;
+        }
+            string t=to_string(root->val);
+            str+=t;
+            str.push_back('-');
+            str.push_back('>');
+            trav(root->left,ans,str);
+            trav(root->right,ans,str);
+    }
+    vector<string> binaryTreePaths(TreeNode* root) {
+        vector<string> ans;
+        string str="";
+        trav(root,ans,str);
+        return ans;
+    }
+};
