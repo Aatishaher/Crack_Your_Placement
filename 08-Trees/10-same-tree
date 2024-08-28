@@ -1,0 +1,24 @@
+class Solution {
+public:
+    bool f(TreeNode* p, TreeNode* q){
+        if(p==NULL && q==NULL){
+            return true;
+        }
+        if(p==NULL && q!=NULL){
+            return false;
+        }
+        if(q==NULL && p!=NULL){
+            return false;
+        }
+        bool left=f(p->left,q->left);
+        bool right=f(p->right,q->right);
+        if(left && right && (p->val==q->val)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+        return f(p,q);    }
+};
