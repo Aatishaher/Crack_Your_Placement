@@ -1,0 +1,25 @@
+class Solution {
+public:
+    bool f(TreeNode* p,TreeNode* q){
+        if(p==NULL && q==NULL){
+            return true;
+        }
+        if(p==NULL && q!=NULL){
+            return false;
+        }
+        if(q==NULL && p!=NULL){
+            return false;
+        }
+        bool op1=f(p->right,q->left);
+        bool op2=f(p->left,q->right);
+        if(op1 && op2 && (p->val==q->val)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    bool isSymmetric(TreeNode* root) {
+        return f(root->left,root->right);
+    }
+};
