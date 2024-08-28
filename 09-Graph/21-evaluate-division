@@ -1,0 +1,42 @@
+class Solution {
+public:
+    double dfs(string start, map<string,bool> &visit, string end, map<string,vector<pair<string,double>>> &adj) {
+    if (start == end) {
+        return 1.0;
+    }
+    visit[start] = true;
+    for (auto& neighbor : adj[start]) {
+        string nextNode = neighbor.first;
+        double weight = neighbor.second;
+        if (!visit[nextNode]) {
+            double result = dfs(nextNode, visit, end, adj);
+            if (result != -1) {
+                return result * weight;
+            }
+        }
+    }
+    return -1;
+}
+
+vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
+    map<string,vector<pair<string,double>>> adj;
+    for (int i = 0; i < equations.size(); i++) {
+        adj[equations[i][0]].push_back({equations[i][1], values[i]});
+        adj[equations[i][1]].push_back({equations[i][0], 1.0 / values[i]});
+    }
+    vector<double> ans(queries.size(), -1);
+    for (int i = 0; i < queries.size(); i++) {
+        string start = queries[i][0];
+        string end = queries[i][1];
+        if (adj.find(start) == adj.end() || adj.find(end) == adj.end()) {
+            ans[i] = -1;
+        } else {
+            map<string, bool> visit;
+            ans[i] = dfs(start, visit, end, adj);
+        }
+    }
+
+    return ans;
+}
+
+};
