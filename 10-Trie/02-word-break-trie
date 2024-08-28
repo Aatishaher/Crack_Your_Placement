@@ -1,0 +1,67 @@
+class Trie{
+  public:
+    char data;
+    Trie* child[26];
+    bool ter;
+    Trie(char ch){
+        data=ch;
+        for(int i=0;i<26;i++){
+            child[i]=NULL;
+        }
+        ter=false;
+    }
+};
+class Solution{
+    public:
+    // A : given string to search
+    // B : vector of available strings
+    bool dfs(int i,Trie* temp,string &s,Trie* root){
+        if(i>=s.length()){
+            if(temp->ter==1){
+                return 1;
+            }
+            return 0;
+        }
+        if(temp->ter==1){
+            bool ans1=dfs(i,root,s,root);
+            if(ans1==1){
+                return 1;
+            }
+            if(temp->child[s[i]-'a']!=NULL){
+                return dfs(i+1,temp->child[s[i]-'a'],s,root);
+            }
+            return 0;
+        }
+        else{
+            if(temp->child[s[i]-'a']!=NULL){
+                return dfs(i+1,temp->child[s[i]-'a'],s,root);
+            }
+        }
+        return 0;
+    }
+    int wordBreak(string A, vector<string> &B) {
+        //code here
+        
+        Trie* root=new Trie('*');
+        Trie* temp=root;
+        for(int i=0;i<B.size();i++){
+            string st=B[i];
+            temp=root;
+            for(int j=0;j<st.length();j++){
+                if(temp->child[st[j]-'a']==NULL){
+                    temp->child[st[j]-'a']=new Trie(st[j]);
+                }
+                temp=temp->child[st[j]-'a'];
+            }
+            temp->ter=1;
+        }
+        
+        temp=root;
+        bool ans=dfs(0,temp,A,root);
+        if(ans==1){
+            return 1;
+        }
+        return 0;
+        
+    }
+};
