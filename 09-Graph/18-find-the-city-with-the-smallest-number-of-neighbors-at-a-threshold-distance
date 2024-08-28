@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int findTheCity(int n, vector<vector<int>>& edges, int k) {
+        vector<list<pair<int,int>>> adj(n);
+        for(int i=0;i<edges.size();i++){
+            adj[edges[i][0]].push_back({edges[i][1],edges[i][2]});
+            adj[edges[i][1]].push_back({edges[i][0],edges[i][2]});
+        }
+        int mini=INT_MAX;
+        int ans=-1;
+        for(int i=0;i<n;i++){
+            int city=0;
+            priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
+            vector<int> dist(n,INT_MAX);
+            pq.push({0,i});
+            dist[i]=0;
+            while(!pq.empty()){
+                int d=pq.top().first;
+                int node=pq.top().second;
+                pq.pop();
+                for(auto neb:adj[node]){
+                    if(d+neb.second<dist[neb.first]){
+                        pq.push({d+neb.second,neb.first});
+                        dist[neb.first]=d+neb.second;
+                    }
+                }
+            }
+            for(int j=0;j<n;j++){
+                if(dist[j]<=k){
+                    city++;
+                }
+            }
+            if(mini>city){
+                mini=city;
+                ans=i;
+            }
+            else if(city==mini && i>ans){
+                ans=i;
+            }
+        }
+        return ans;
+    }
+};
