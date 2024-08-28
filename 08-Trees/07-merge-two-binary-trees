@@ -1,0 +1,33 @@
+class Solution {
+public:
+    void sol(TreeNode* root1,TreeNode* root2){
+        if(root1==NULL && root2==NULL){
+            return;
+        }
+        root1->val+=root2->val;
+        if(root1->left==NULL && root2->left!=NULL){
+            root1->left=new TreeNode(0);
+        }
+        else if(root1->left!=NULL && root2->left==NULL){
+            root2->left=new TreeNode(0);
+        }
+        sol(root1->left,root2->left);
+        if(root1->right==NULL && root2->right!=NULL){
+            root1->right=new TreeNode(0);
+        }
+        else if(root1->right!=NULL && root2->right==NULL){
+            root2->right=new TreeNode(0);
+        }
+        sol(root1->right,root2->right);
+    }
+    TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
+        if(!root1){
+            return root2;
+        }
+        if(!root2){
+            return root1;
+        }
+        sol(root1,root2);
+        return root1;
+    }
+};
