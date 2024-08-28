@@ -1,0 +1,85 @@
+class Solution {
+public:
+    bool valid(int i,int j,int row,int col){
+        if(i<0 || j<0 || i>=row || j>=col){
+            return 0;
+        }
+        return 1;
+    }
+    void dfs(int i,int j,queue<pair<int,int>> &q,vector<vector<int>> &grid,vector<vector<bool>> &visit){
+        visit[i][j]=1;
+        q.push({i,j});
+        if(valid(i,j+1,grid.size(),grid[0].size()) && grid[i][j+1]==1 && visit[i][j+1]==0){
+            dfs(i,j+1,q,grid,visit);
+        }
+        if(valid(i,j-1,grid.size(),grid[0].size()) && grid[i][j-1]==1 && visit[i][j-1]==0){
+            dfs(i,j-1,q,grid,visit);
+        }
+        if(valid(i+1,j,grid.size(),grid[0].size()) && grid[i+1][j]==1 && visit[i+1][j]==0){
+            dfs(i+1,j,q,grid,visit);
+        }
+        if(valid(i-1,j,grid.size(),grid[0].size()) && grid[i-1][j]==1 && visit[i-1][j]==0){
+            dfs(i-1,j,q,grid,visit);
+        }
+    }
+    int shortestBridge(vector<vector<int>>& grid) {
+        int row=grid.size();
+        int col=grid[0].size();
+        queue<pair<int,int>> q;
+        bool found=0;
+        vector<vector<bool>> visit(row,vector<bool>(col,0));
+        for(int i=0;i<row;i++){
+            for(int j=0;j<col;j++){
+                if(grid[i][j]==1){
+                    dfs(i,j,q,grid,visit);
+                    found=1;
+                    break;
+
+                }
+            }
+            if(found){
+                break;
+            }
+        }
+        int ans=0;
+        while(!q.empty()){
+            int size=q.size();
+            while(size-->0){
+            int i=q.front().first;
+            int j=q.front().second;
+            q.pop();
+            if(valid(i+1,j,row,col) && visit[i+1][j]==0){
+                if(grid[i+1][j]==1){
+                    return ans;
+                }
+                visit[i+1][j]=1;
+                q.push({i+1,j});
+            }
+            if(valid(i-1,j,row,col) && visit[i-1][j]==0){
+                if(grid[i-1][j]==1){
+                    return ans;
+                }
+                visit[i-1][j]=1;
+                q.push({i-1,j});
+            }
+            if(valid(i,j+1,row,col) && visit[i][j+1]==0){
+                if(grid[i][j+1]==1){
+                    return ans;
+                }
+                visit[i][j+1]=1;
+                q.push({i,j+1});
+            }
+            if(valid(i,j-1,row,col) && visit[i][j-1]==0){
+                if(grid[i][j-1]==1){
+                    return ans;
+                }
+                visit[i][j-1]=1;
+                q.push({i,j-1});
+            }
+
+        }
+        ans++;
+        }
+        return ans;
+    }
+};
