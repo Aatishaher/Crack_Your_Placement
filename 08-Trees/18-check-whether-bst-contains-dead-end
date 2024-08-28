@@ -1,0 +1,36 @@
+class Solution{
+  public:
+    void trav(Node* root,map<int,bool> &mp){
+        if(root==NULL){
+            return;
+        }
+        mp[root->data]=1;
+        trav(root->left,mp);
+        trav(root->right,mp);
+    }
+    bool ck(Node* root,map<int,bool> &mp){
+        if(root==NULL){
+            return false;
+        }
+        if(root->left==NULL && root->right==NULL){
+            if(root->data==1 && mp[2]==true){
+                return true;
+            }
+            if(mp[root->data-1]==true && mp[root->data+1]==true){
+                return true;
+            }
+            return false;
+        }
+        bool ans1=ck(root->left,mp);
+        bool ans2=ck(root->right,mp);
+        return (ans1 || ans2);
+        
+    }
+    bool isDeadEnd(Node *root)
+    {
+        //Your code here
+        map<int,bool> mp;
+        trav(root,mp);
+        return ck(root,mp);
+    }
+};
