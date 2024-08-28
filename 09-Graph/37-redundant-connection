@@ -1,0 +1,31 @@
+class Solution {
+public:
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        vector<int> v(edges.size()+2);
+        for(int i=0;i<v.size();i++){
+            v[i]=i;
+        }
+        for(int i=0;i<edges.size();i++){
+            if(v[edges[i][0]]==v[edges[i][1]]){
+                return {edges[i][0],edges[i][1]};
+            }
+            int h,m;
+            if(v[edges[i][0]]<v[edges[i][1]]){
+                h=v[edges[i][0]];
+                m=v[edges[i][1]];
+            }
+            else{
+                m=v[edges[i][0]];
+                h=v[edges[i][1]];
+            }
+
+            for(int j=0;j<v.size();j++){
+                if(v[j]==m){
+                    v[j]=h;
+                }
+            }
+        }
+        return {-1};
+        
+    }
+};
