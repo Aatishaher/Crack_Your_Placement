@@ -1,0 +1,50 @@
+class Solution {
+public:
+    int snakesAndLadders(vector<vector<int>>& board) {
+        int n=board.size();
+        int cnt=1;
+        bool r=0;
+        map<int,int> mp;
+        for(int i=n-1;i>=0;i--){
+            r=!r;
+            for(int j=0;j<n;j++){
+                if(r){
+                    if(board[i][j]!=-1){
+                        mp[cnt]=board[i][j];
+                    }
+                }
+                else{
+                    if(board[i][n-j-1]!=-1){
+                        mp[cnt]=board[i][n-j-1];
+                    }
+                }
+                cnt++;
+            }
+        }
+        queue<pair<int,int>> q;
+        q.push({1,0});
+        vector<bool>visit((n*n)+10,0);
+        visit[1]=1;
+        while(!q.empty()){
+            int cell=q.front().first;
+            int time=q.front().second;
+            q.pop();
+            if(cell==n*n){
+                return time;
+            }
+            for(int i=1;i<=6;i++){
+                if(cell+i<=n*n && visit[cell+i]==0){
+                    visit[cell+i]=1;
+                    if(mp.find(cell+i)!=mp.end()){
+                        q.push({mp[cell+i],time+1});
+                    }
+                    else{
+                        q.push({cell+i,time+1});
+                    }
+                }
+            }
+            
+        }
+        return -1;
+    }
+};
