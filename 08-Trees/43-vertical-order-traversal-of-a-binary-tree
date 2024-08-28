@@ -1,0 +1,26 @@
+class Solution {
+public:
+    void trav(TreeNode* root,map<int,priority_queue<pair<int, int>,vector<pair<int, int>>,greater<pair<int, int>>>> &mp,int x,int l){
+        if(root==NULL){
+            return;
+        }
+        mp[x].push({l,root->val});
+        trav(root->left,mp,x-1,l+1);
+        trav(root->right,mp,x+1,l+1);
+    }
+    //level,value
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        map<int,priority_queue<pair<int, int>,vector<pair<int, int>>,greater<pair<int, int>>>> mp;
+        trav(root,mp,0,0);
+        vector<vector<int>> ans;
+        for(auto pq:mp){
+            vector<int> out;
+            while(!pq.second.empty()){
+                out.push_back(pq.second.top().second);
+                pq.second.pop();
+            }
+            ans.push_back(out);
+        }
+        return ans;
+    }
+};
