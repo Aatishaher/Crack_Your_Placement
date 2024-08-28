@@ -1,0 +1,22 @@
+class Solution {
+  public:
+    Node* pre=NULL;
+    Node* head=NULL;
+    Node* bToDLL(Node* root) {
+        // code here
+        if(root==NULL){
+            return NULL;
+        }
+        bToDLL(root->left);
+        if(pre==NULL){
+            head=root;
+        }
+        else{
+            root->left=pre;
+            pre->right=root;
+        }
+        pre=root;
+        bToDLL(root->right);
+        return head;
+    }
+};
