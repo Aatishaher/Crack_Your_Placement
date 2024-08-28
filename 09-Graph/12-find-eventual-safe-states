@@ -1,0 +1,50 @@
+class Solution {
+public:
+    bool dfs(int i,vector<bool> &visit,unordered_set<int> &st,unordered_set<int> &ans,vector<list<int>> &adj){
+        if(st.find(i)!=st.end()){
+            return 1;
+        }
+        if(visit[i]==1){
+            if(ans.find(i)!=ans.end()){
+                return true;
+            }
+            return false;
+        }
+        visit[i]=1;
+        bool a=0;
+        for(auto neb:adj[i]){
+            a=dfs(neb,visit,st,ans,adj);
+            if(a==false){
+                return 0;
+            }
+        }
+        ans.insert(i);
+        return true;
+    }
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        unordered_set<int> st;
+        int n=graph.size();
+        vector<list<int>> adj(graph.size());
+        for(int i=0;i<graph.size();i++){
+            for(int j=0;j<graph[i].size();j++){
+                adj[i].push_back(graph[i][j]);
+            }
+            if(adj[i].size()==0){
+                //cout<<i<<" ";
+                st.insert(i);
+            }
+        }
+        vector<bool> visit(n,0);
+        unordered_set<int> ans;
+        for(int i=0;i<n;i++){
+            if(visit[i]==0){
+                dfs(i,visit,st,ans,adj);
+            }
+        }
+        vector<int> sol(ans.begin(),ans.end());
+        sol.insert(sol.end(),st.begin(),st.end());
+        //return sol;
+        sort(sol.begin(),sol.end());
+        return sol;
+    }
+};
