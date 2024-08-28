@@ -1,0 +1,31 @@
+class Solution {
+public:
+    bool sol(int i,int last,int laststep,set<int> &st,map<pair<int,int>,bool> &dp){
+        if(i>laststep || st.find(i)==st.end()){
+            return 0;
+        }
+        if(i==laststep){
+            return 1;
+        }
+        if(dp.find({i,last})!=dp.end()){
+            return dp[{i,last}];
+        }
+        if(last==1){
+            return dp[{i,last}]=sol(i+1,last,laststep,st,dp) || sol(i+2,2,laststep,st,dp);
+        }
+        else{
+            return dp[{i,last}]=sol(i+last-1,last-1,laststep,st,dp) || sol(i+last,last,laststep,st,dp) || sol(i+last+1,last+1,laststep,st,dp);
+        }
+    }
+    bool canCross(vector<int>& stones) {
+        int n=stones.size();
+        if(stones[1]!=1){
+            return 0;
+        }
+        map<pair<int,int>,bool> dp;
+        set<int> st(stones.begin(),stones.end());
+        int laststep=stones[stones.size()-1];
+        int last=stones[1]-stones[0];
+        return sol(stones[1],last,laststep,st,dp);
+    }
+};
