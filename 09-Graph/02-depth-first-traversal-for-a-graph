@@ -1,0 +1,21 @@
+class Solution {
+  public:
+    // Function to return a list containing the DFS traversal of the graph.
+    void sol(int i,vector<int> &visit,vector<int> &ans,vector<int> adj[]){
+        ans.push_back(i);
+        for(auto neb:adj[i]){
+            if(visit[neb]==0){
+                visit[neb]=1;
+                sol(neb,visit,ans,adj);
+            }
+        }
+    }
+    vector<int> dfsOfGraph(int V, vector<int> adj[]) {
+        // Code here
+        vector<int> visit(V,0);
+        vector<int> ans;
+        visit[0]=1;
+        sol(0,visit,ans,adj);
+        return ans;
+    }
+};
