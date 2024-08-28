@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int sol(int amount,vector<int> &nums,vector<int> &dp){
+        if(amount<=0){
+            return 0;
+        }
+        if(dp[amount]!=-1){
+            return dp[amount];
+        }
+        int ans=1e9;
+        for(int i=0;i<nums.size();i++){
+            if(amount-nums[i]>=0){
+                ans=min(ans,1+sol(amount-nums[i],nums,dp));
+            }
+        }
+        return dp[amount]=ans;
+    }
+    int coinChange(vector<int>& coins, int amount) {
+        vector<int> dp(amount + 1, -1);
+        int a= sol(amount,coins,dp);
+        if(a>=1e9){
+            return -1;
+        }
+        return a;
+    }
+};
