@@ -1,0 +1,29 @@
+class Solution {
+public:
+    void sol(vector<int> &nums,TreeNode* root){
+        if(root==NULL){
+            return;
+        }
+        sol(nums,root->left);
+        nums.push_back(root->val);
+        sol(nums,root->right);
+    }
+    bool isValidBST(TreeNode* root) {
+        if(root==NULL || (root->left==NULL && root->right==NULL)){
+            return true;
+        }
+        bool left=isValidBST(root->left);
+        bool right=isValidBST(root->right);
+        bool final=true;
+        if(root->left && (root->left->val>=root->val)){
+            final=false;
+        }
+        if(root->right &&(root->right->val<=root->val)){
+            final=false;
+        }
+        if(!(left&& right && final)){
+            //cout<<root->val<<endl;
+        }
+        return left && right && final;
+    }
+};
