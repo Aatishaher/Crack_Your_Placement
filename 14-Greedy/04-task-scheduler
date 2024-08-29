@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+        priority_queue<int> pq; // storing max eles at the top (max heap)
+        vector<int>mp(26,0);
+        for(auto it:tasks) mp[it-'A']++; //freq map ==> [3, 3]  
+        for(int i=0;i<26;++i){
+            if(mp[i]!=0) pq.push(mp[i]); 
+        }
+        int time=0; // initially since no tasks are done 
+        while(!pq.empty()){ // till the time all the tasks are not done
+            vector<int>left; // storing the left eles
+            int cycle=n+1;  //CPU LENGTH 
+            while(cycle and !pq.empty()){
+                int maxi=pq.top(); //MAX ELE FROM MY PQ ==> TOP ELE (MAXHEAP)
+                pq.pop(); //3 ->POP(3)
+                if(maxi>1){ 
+                    left.push_back(maxi-1); //2
+                }
+                ++time; //SINCE 1 CYCLE GETS COMPLETED
+                --cycle; 
+            }
+            for(auto it:left){
+                pq.push(it); 
+            }
+            if(pq.empty())break; 
+            time+=cycle; 
+        }
+        return time;
+    }
+};
