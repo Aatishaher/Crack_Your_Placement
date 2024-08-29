@@ -1,0 +1,28 @@
+class Solution {
+public:
+    void sol(int i, vector<int>& nums, int tar, vector<vector<int>>& ans, vector<int>& out) {
+    if (tar == 0) {
+        ans.push_back(out);
+        return;
+    }
+
+    for (int j = i; j < nums.size(); j++) {
+        if (j > i && nums[j] == nums[j - 1]) {
+            continue; 
+        }
+        if (tar - nums[j] >= 0) {
+            out.push_back(nums[j]);
+            sol(j + 1, nums, tar - nums[j], ans, out);
+            out.pop_back(); 
+        }
+    }
+}
+
+vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+    vector<vector<int>> ans;
+    vector<int> out;
+    sort(candidates.begin(), candidates.end());
+    sol(0, candidates, target, ans, out);
+    return ans;
+}
+};
