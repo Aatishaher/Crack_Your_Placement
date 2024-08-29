@@ -1,0 +1,32 @@
+class Solution {
+public:
+    void dfs(int start,map<int,vector<int>> &mp,set<int> &st,vector<int> &ans){
+        ans.push_back(start);
+        st.insert(start);
+        for(auto i:mp[start]){
+            if(st.find(i)==st.end()){
+                dfs(i,mp,st,ans);
+            }
+        }
+    }
+    vector<int> restoreArray(vector<vector<int>>& adjacentPairs) {
+        map<int,vector<int>> mp;
+        for(int i=0;i<adjacentPairs.size();i++){
+            mp[adjacentPairs[i][1]].push_back(adjacentPairs[i][0]);
+            mp[adjacentPairs[i][0]].push_back(adjacentPairs[i][1]);
+        }
+        set<int> st;
+        int start;
+        for(auto i:mp){
+            //cout<<"hi";
+            if(i.second.size()==1){
+                start=i.first;
+                break;
+            }
+        }
+        //cout<<start<<" ";
+        vector<int> ans;
+        dfs(start,mp,st,ans);
+        return ans;
+    }
+};
