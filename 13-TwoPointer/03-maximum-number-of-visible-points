@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int visiblePoints(vector<vector<int>>& points, int angle, vector<int>& location) {
+    vector<double> v;
+    int extra = 0;
+    for (int i = 0; i < points.size(); i++) {
+        int dx = points[i][0] - location[0];
+        int dy = points[i][1] - location[1];
+
+        if (dx == 0 && dy == 0) {
+            extra++;
+            continue;
+        }
+        //copy
+        double ang = atan2(dy, dx) * 180.0 / M_PI;
+        v.push_back(ang);
+    }
+    sort(v.begin(), v.end());
+    int size = v.size();
+    for (int i = 0; i < size; i++) {
+        v.push_back(v[i] + 360.0);
+    }
+    int l = 0, ans = 0;
+    for (int r = 0; r < v.size(); r++) {
+        while (v[r] - v[l] > angle) {
+            l++;
+        }
+        ans = max(ans, r - l + 1);
+    }
+
+    return ans + extra;
+}
+};
