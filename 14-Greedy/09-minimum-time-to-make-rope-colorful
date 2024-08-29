@@ -1,0 +1,36 @@
+class Solution {
+public:
+int ans=0;
+    void count(int start, int end,vector<int>& arr){
+        int maxi=0;
+        for(int i=start;i<=end;i++){
+            ans+=arr[i];
+            maxi=max(maxi,arr[i]);
+            }
+        ans-=maxi;
+    }
+    int minCost(string colors, vector<int>& neededTime) {
+        int start=-1;
+        int end=-1;
+        for(int i=1;i<colors.length();i++){
+            if(colors[i]==colors[i-1]){
+                //cout<<i<<endl;
+                if(start==-1){
+                    start=i-1;
+                }
+                end=i;
+            }
+            else{
+                if(end!=-1){
+                    count(start,end,neededTime);
+                    start=-1;
+                    end=-1;
+                }
+            }
+        }
+        if(end!=-1){
+                    count(start,end,neededTime);
+            }
+        return ans;
+    }
+};
