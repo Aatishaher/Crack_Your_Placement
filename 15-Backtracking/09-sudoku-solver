@@ -1,0 +1,48 @@
+class Solution {
+public:
+    bool done(vector<vector<char>>& b,int n){
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(b[i][j]=='.'){
+                    return 0;
+                }
+            }
+        }
+        return 1;
+    }
+    bool poss(int i,int j,char ch,vector<vector<char>>& b,int n){
+        for(int row=0;row<n;row++){
+            if(b[row][j]==ch){
+                return 0;
+            }
+            if(b[i][row]==ch){
+                return 0;
+            }
+            if(b[3*(i/3) +row/3][3*(j/3)+ row%3]==ch){
+                return false;
+            }
+        }
+        return 1;
+    }
+    void solveSudoku(vector<vector<char>>& b) {
+        int n=b.size();
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(b[i][j]=='.'){
+                    for(int val=1;val<=9;val++){
+                        char ch=val+'0';
+                        if(poss(i,j,ch,b,n)){
+                            b[i][j]=ch;
+                            solveSudoku(b);
+                            if(done(b,n)){
+                                return;
+                            }
+                            b[i][j]='.';
+                        }
+                    }
+                    return;
+                }
+            }
+        }
+    }
+};
