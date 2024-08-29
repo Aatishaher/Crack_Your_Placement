@@ -1,0 +1,39 @@
+class Solution{
+  public:
+    bool sol(int sum,int cursum,int k,vector<bool> &visit,int n,int arr[]){
+        if(k==1){
+            return 1;
+        }
+        if(cursum>sum){
+            return 0;
+        }
+        if(cursum==sum){
+            return sol(sum,0,k-1,visit,n,arr);
+        }
+        for(int i=0;i<n;i++){
+            if(visit[i]==0){
+                visit[i]=1;
+                if(sol(sum,cursum+arr[i],k,visit,n,arr)){
+                    return 1;
+                }
+                visit[i]=0;
+            }
+        }
+        return 0;
+    }
+    bool isKPartitionPossible(int a[], int n, int k)
+    {
+         //Your code here
+         int sum=0;
+         for(int i=0;i<n;i++){
+             sum+=a[i];
+         }
+         if(sum%k!=0){
+             return 0;
+         }
+         sum=sum/k;
+         vector<bool> visit(n,0);
+         return sol(sum,0,k,visit,n,a);
+         
+    }
+};
