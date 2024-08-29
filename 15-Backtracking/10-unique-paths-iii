@@ -1,0 +1,57 @@
+class Solution {
+public:
+    int ans=0;
+    bool chk(vector<vector<int>> &mat){
+        for(int i=0;i<mat.size();i++){
+            for(int j=0;j<mat[0].size();j++){
+                if(mat[i][j]==0){
+                    return 0;
+                }
+            }
+        }
+        return 1;
+    }
+    bool valid(int i,int j,int row,int col){
+        if(i<0 || j<0 || i>=row || j>=col){
+            return 0;
+        }
+        return 1;
+    }
+    void dfs(int i,int j,vector<vector<int>> &mat){
+        if(mat[i][j]==2){
+            if(chk(mat)){
+                ans++;
+            }
+            return;
+        }
+        mat[i][j]=-1;
+        if(valid(i+1,j,mat.size(),mat[0].size()) && mat[i+1][j]!=-1){
+            dfs(i+1,j,mat);
+        }
+        if(valid(i,j+1,mat.size(),mat[0].size()) && mat[i][j+1]!=-1){
+            dfs(i,j+1,mat);
+        }
+        if(valid(i,j-1,mat.size(),mat[0].size()) && mat[i][j-1]!=-1){
+            dfs(i,j-1,mat);
+        }
+        if(valid(i-1,j,mat.size(),mat[0].size()) && mat[i-1][j]!=-1){
+            dfs(i-1,j,mat);
+        }
+        mat[i][j]=0;
+
+    }
+    int uniquePathsIII(vector<vector<int>>& grid) {
+        int i,j;
+        for(int x=0;x<grid.size();x++){
+            for(int y=0;y<grid[0].size();y++){
+                if(grid[x][y]==1){
+                    i=x;
+                    j=y;
+                    break;
+                }
+            }
+        }
+        dfs(i,j,grid);
+        return ans;
+    }
+};
