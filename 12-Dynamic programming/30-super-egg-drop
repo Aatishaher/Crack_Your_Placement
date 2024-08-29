@@ -1,0 +1,38 @@
+class Solution {
+public:
+    // k eggs : n floors
+    int helper(int k, int n, vector<vector<int>> &dp){
+        if(n==0 or n==1 or k==1) return n;
+        if(dp[n][k]!=-1) return dp[n][k];
+        int low=1, high=n, result=high;
+        while(low<=high){
+            int mid=low+(high-low)/2;
+            int lower=0, upper=0;
+            if(dp[mid-1][k-1]!=-1){
+                lower=dp[mid-1][k-1];
+            }else{
+                lower=helper(k-1,mid-1,dp);
+                dp[mid-1][k-1]=lower;
+            }
+            
+            if(dp[n-mid][k]!=-1){
+                upper=dp[n-mid][k];
+            }else{
+                upper=helper(k,n-mid,dp);
+                dp[n-mid][k]=upper;
+            }
+            int temp=1+max(lower,upper);
+            dp[n][k]=temp;
+            result=min(result,temp);
+        if(lower<upper) low=mid+1;
+        else if(lower>upper) high=mid-1;
+        else break;
+        }
+    return dp[n][k]=result;
+    }
+
+    int superEggDrop(int k, int n) {
+        vector<vector<int>> dp(n+1,vector<int>(k+1,-1));
+    return helper(k,n,dp);
+    }
+};
