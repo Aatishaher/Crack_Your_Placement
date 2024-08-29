@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int sol(int i,int j,vector<int> &nums,vector<vector<int>> &dp){
+        if(i>j){
+            return 0;
+        }
+        if(dp[i][j]!=-1){
+            return dp[i][j];
+        }
+        int ans=-1e9;
+        for(int ind=i;ind<=j;ind++){
+            ans=max(ans,(nums[ind]*nums[j+1]*nums[i-1])+sol(i,ind-1,nums,dp)+sol(ind+1,j,nums,dp));
+        }
+        //cout<<ans<<endl;
+        return dp[i][j]=ans;
+    }
+    int maxCoins(vector<int>& nums) {
+        nums.insert(nums.begin(),1);
+        nums.push_back(1);
+        vector<vector<int>> dp(nums.size()+1,vector<int>(nums.size()+1,-1));
+        return sol(1,nums.size()-2,nums,dp);
+    }
+};
