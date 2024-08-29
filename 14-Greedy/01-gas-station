@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        vector<int> nums;
+        int n=gas.size();
+        for(int i=0;i<n;i++){
+            nums.push_back(gas[i]-cost[i]);
+        }
+        for(int start=0;start<n;){
+            int fuel=0;
+            bool f=0;
+            int j=start;
+            for(;j<start+n;j++){
+                fuel+=nums[j%n];
+                if(fuel<0){
+                    f=1;
+                    break;
+                }
+            }
+            if(f==0){
+                return start;
+            }
+            start=j+1;
+        }
+        return -1;
+
+    }
+};
