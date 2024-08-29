@@ -1,0 +1,58 @@
+class Solution {
+public:
+    bool poss(int i, int j, vector<vector<char>> &b, int n) {
+    for (int row = 0; row < i; row++) {
+        if (b[row][j] == 'Q') {
+            return false;
+        }
+    }
+    int row = i, col = j;
+    while (row >= 0 && col >= 0) {
+        if (b[row][col] == 'Q') {
+            return false;
+        }
+        row--;
+        col--;
+    }
+    row = i, col = j;
+    while (row >= 0 && col < n) {
+        if (b[row][col] == 'Q') {
+            return false;
+        }
+        row--;
+        col++;
+    }
+
+    return true;
+}
+
+void sol(int i, vector<vector<char>> &b, vector<vector<string>> &ans, int n) {
+    if (i == n) {
+        vector<string> st;
+        for (int j = 0; j < n; j++) {
+            string row = "";
+            for (int k = 0; k < n; k++) {
+                row += b[j][k];
+            }
+            st.push_back(row);
+        }
+        ans.push_back(st);
+        return;
+    }
+
+    for (int j = 0; j < n; j++) {
+        if (poss(i, j, b, n)) {
+            b[i][j] = 'Q';
+            sol(i + 1, b, ans, n);
+            b[i][j] = '.';
+        }
+    }
+}
+
+vector<vector<string>> solveNQueens(int n) {
+    vector<vector<char>> b(n, vector<char>(n, '.'));
+    vector<vector<string>> ans;
+    sol(0, b, ans, n);
+    return ans;
+}
+};
