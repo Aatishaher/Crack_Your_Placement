@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int minDeletions(string s) {
+        map<char,int> mp;
+        for(char ch:s){
+            mp[ch]++;
+        }
+        priority_queue<int> pq;
+        for(auto i:mp){
+            pq.push(i.second);
+        }
+        int avai;
+        set<int> st;
+        int ans=0;
+        while(!pq.empty()){
+            int t=pq.top();
+            pq.pop();
+            if(st.find(t)==st.end()){
+                st.insert(t);
+                avai=t-1;
+            }
+            else{
+                ans+=t-avai;
+                st.insert(avai);
+                if(avai>0){
+                    avai--;
+                }
+            }
+        }
+        return ans;
+    }
+};
