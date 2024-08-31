@@ -1,0 +1,27 @@
+class Solution{
+  public:
+    vector<vector<string> > Anagrams(vector<string>& string_list) {
+        //code her
+        vector<vector<string>> ans;
+        vector<string> temp=string_list;
+        for(int i=0;i<temp.size();i++){
+            sort(temp[i].begin(),temp[i].end());
+        }
+        for(int i=0;i<temp.size();i++){
+            vector<string> out;
+            out.push_back(string_list[i]);
+            for(int j=i+1;j<temp.size();){
+                if(temp[i]==temp[j]){
+                    out.push_back(string_list[j]);
+                    string_list.erase(string_list.begin()+j);
+                    temp.erase(temp.begin()+j);
+                }
+                else{
+                    j++;
+                }
+            }
+            ans.push_back(out);
+        }
+        return ans;
+    }
+};
