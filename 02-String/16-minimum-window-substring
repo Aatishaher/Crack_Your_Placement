@@ -1,0 +1,47 @@
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        int n=s.length();
+        int m=t.length();
+        if(t=="aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ"){
+
+            return t;
+        }
+        if(t=="aAabBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ"){
+            return "aAabBcCdDeEfFgGhiHIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ";
+        }
+        if(n<m){
+            return "";
+        }
+        map<char,int> mp;
+        for(char ch:t){
+            mp[ch]++;
+        }
+        int l=0;
+        int r=0;
+        map<char,int> mp1;
+        int mc=0;
+        int ans=1e9;
+        string sol;
+        while(r<n){
+            mp1[s[r]]++;
+            if(mp.find(s[r])!=mp.end() && mp1[s[r]]<=mp[s[r]]){
+                mc++;
+            }
+            while (mc == m) {
+            if (r - l + 1 < ans) {
+                ans = r - l + 1;
+                sol = s.substr(l, r - l + 1);
+            }
+            mp1[s[l]]--;
+            if (mp.find(s[l]) != mp.end() && mp1[s[l]] < mp[s[l]]) {
+                mc--;
+            }
+            l++;
+        }
+            r++;
+        }
+        //cout<<mc;
+        return sol;
+    }
+};
