@@ -1,0 +1,39 @@
+class Solution {
+public:
+    string simplifyPath(string path) {
+        stack<string> st;
+        int i=0;
+        while(i!=path.length()){
+            int start=i;
+            int end=i+1;
+            while(end<path.length() && path[end]!='/'){
+                ++end;
+            }
+            i=end;
+            string mini=path.substr(start,end-start);
+            if(mini=="/" || mini=="/."){
+                continue;
+            }
+            else if(mini=="/.."){
+                if(!st.empty()){
+                st.pop();
+                }
+                cout<<"hi";
+            }
+            else{
+                st.push(mini);
+            }
+        }
+    string ans;
+    if(st.empty()){
+        return "/";
+    }
+    while(!st.empty()){
+        //cout<<st.top()<<" "<<ans<<endl;
+        ans.insert(0, st.top());
+        st.pop();
+    }
+    //reverse(ans.begin(),ans.end());
+    return ans;
+    }
+};
