@@ -1,0 +1,50 @@
+class Solution {
+public:
+    vector<string> fullJustify(vector<string>& words, int maxWidth) {
+        int i = 0;
+        vector<string> ans;
+        int n = words.size();
+        while (i < n) {
+            int letter = words[i].length();
+            int j = i + 1;
+            int gaddha = 0;
+            while (j < n && words[j].length() + 1 + letter +gaddha<= maxWidth) {
+                letter += words[j].length();
+                gaddha++;
+                j++;
+            }
+            int blank;
+            int between=1;
+            int extra=0;
+            if (j == n) {
+                between = 1;
+                extra = 0;
+            }
+            else if(gaddha!=0){
+                blank = maxWidth - letter;
+                between = blank / gaddha;
+                extra = blank % gaddha;
+            }
+            string st;
+            while(i<j){
+                st+=words[i];
+                if(st.length()<maxWidth){
+                    for(int k=0;k<between;k++){
+                        st.push_back(' ');
+                    }
+                    if(extra){
+                        st.push_back(' ');
+                        extra--;
+                    }
+                }
+                i++;
+            }
+            for(int k=st.size();k<maxWidth;k++){
+                st.push_back(' ');
+            }
+            i=j;
+            ans.push_back(st);
+        }
+        return ans;
+    }
+};
