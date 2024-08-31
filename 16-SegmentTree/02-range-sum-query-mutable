@@ -1,0 +1,65 @@
+class NumArray {
+public:
+    int n;
+    vector<int> seg;
+    void build(int i,int left,int right,vector<int> &nums){
+        if(left==right){
+            seg[i]=nums[left];
+            return;
+        }
+        int mid=(left+right)/2;
+        build((i*2)+1,left,mid,nums);
+        build((i*2)+2,mid+1,right,nums);
+        seg[i]=seg[(i*2)+1]+seg[(i*2)+2];
+    }
+
+    void up(int i,int left,int right,int index,int val){
+        if(left==right){
+            seg[i]=val;
+            return;
+        }
+
+        int mid=(left+right)/2;
+        if(index>mid){
+            up((i*2)+2,mid+1,right,index,val);
+        }
+        else{
+            up((i*2)+1,left,mid,index,val);
+        }
+        seg[i]=seg[(i*2)+1]+seg[(i*2)+2];
+    }
+    int sum(int left,int right,int i,int start,int end){
+        if(left>end || right<start){
+            return 0;
+        }
+        if(left<=start && right>=end){
+            return seg[i];
+        }
+        int mid=(start+end)/2;
+        return sum(left,right,(i*2)+1,start,mid)+sum(left,right,(i*2)+2,mid+1,end);
+        //return sum(left, right, (i * 2) + 1, start, mid) + sum(left, right, (i * 2) + 2, mid + 1, end);
+    }
+
+
+
+    NumArray(vector<int>& nums) {
+        n=nums.size();
+        seg.resize(n*4,0);
+        build(0,0,n-1,nums);
+    }
+    
+    void update(int index, int val) {
+        up(0,0,n-1,index,val);
+    }
+    
+    int sumRange(int left, int right) {
+        return sum(left,right,0,0,n-1);
+    }
+};
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray* obj = new NumArray(nums);
+ * obj->update(index,val);
+ * int param_2 = obj->sumRange(left,right);
+ */
