@@ -1,0 +1,43 @@
+class Solution
+{
+    public:
+    //Function to find the smallest window in the string s consisting
+    //of all the characters of string p.
+    string smallestWindow (string s, string p) {
+    if (s.empty() || p.empty()) return "";
+
+    pair<int, int> ans = {-1, INT_MAX}; // {start, length}
+    int l = 0, r = 0, len = 0;
+    map<char, int> mp;
+
+    for (char c : p) {
+        mp[c]++;
+    }
+
+    while (r < s.length()) {
+        if (mp.find(s[r]) != mp.end()) {
+            mp[s[r]]--;
+            if (mp[s[r]] >= 0) { // Only increment len if it's a required character
+                len++;
+            }
+        }
+
+        while (len == p.length()) { // Valid window found
+            if (ans.second > (r - l + 1)) {
+                ans = {l, r - l + 1};
+            }
+
+            if (mp.find(s[l]) != mp.end()) {
+                mp[s[l]]++;
+                if (mp[s[l]] > 0) { // If it's a required character, decrement len
+                    len--;
+                }
+            }
+            l++;
+        }
+        r++;
+    }
+
+    return ans.second == INT_MAX ? "" : s.substr(ans.first, ans.second);
+}
+};
