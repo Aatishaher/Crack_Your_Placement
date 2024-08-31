@@ -1,0 +1,29 @@
+class Solution 
+{
+    public:
+    //Function to find the minimum number of swaps required to sort the array. 
+	int minSwaps(vector<int>&nums)
+	{
+	    // Code here
+	    vector<pair<int,int>> v;
+	    vector<pair<int,int>> w;
+	    for(int i=0;i<nums.size();i++){
+	        v.push_back({nums[i],i});
+	        w.push_back({nums[i],i});
+	    }
+	    sort(v.begin(),v.end());
+	    int j=0;
+	    int ans=0;
+	    while(j<nums.size()){
+	        if(v[j].second==w[j].second){
+	            j++;
+	        }
+	        else{
+	            swap(v[j],v[v[j].second]);
+	            ans++;
+	        }
+	    }
+	    return ans;
+	    
+	}
+};
